@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Log Book Baca Alkitab 3 Bulan</title>
+    <style>
+        :root {
+            --bg-main: #FAF6F0;
+            --primary-golden: #D9A566;
+            --secondary-sage: #8FA899;
+            --interactive-sky: #8DA9C4;
+            --highlight-blush: #E0A899;
+            --text-charcoal: #3D3833;
+            --text-taupe: #8A8175;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-charcoal);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(61, 56, 51, 0.05);
+            border-top: 5px solid var(--primary-golden);
+        }
+
+        h1 {
+            color: var(--primary-golden);
+            margin: 0 0 10px 0;
+            font-size: 24px;
+        }
+
+        p.subtitle {
+            color: var(--text-taupe);
+            margin: 0;
+            font-size: 14px;
+        }
+
+        .form-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(61, 56, 51, 0.05);
+            margin-bottom: 30px;
+        }
+
+        .form-row {
+            display: table;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .form-col-3 {
+            display: table-cell;
+            width: 33.33%;
+            padding-right: 10px;
+        }
+        .form-col-3:last-child {
+            padding-right: 0;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text-charcoal);
+            font-size: 14px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 15px;
+            color: var(--text-charcoal);
+            background-color: var(--bg-main);
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--interactive-sky);
+        }
+
+        .book-section {
+            background-color: #ffffff;
+            border: 1px solid #f1f5f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border-left: 4px solid var(--secondary-sage);
+        }
+
+        .book-title {
+            color: var(--primary-golden);
+            font-weight: bold;
+            margin-top: 0;
+            margin-bottom: 12px;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .inline-inputs {
+            display: table;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .inline-field {
+            display: table-cell;
+            padding-right: 10px;
+        }
+        .inline-field.pasal { width: 25%; }
+        .inline-field.ayat { width: 35%; }
+        .inline-field.ayat-mas { width: 40%; }
+        .inline-field:last-child { padding-right: 0; }
+
+        button.btn-submit {
+            background-color: var(--primary-golden);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+            transition: background 0.2s;
+        }
+
+        button.btn-submit:hover {
+            opacity: 0.9;
+        }
+
+        .history-section {
+            margin-top: 40px;
+        }
+
+        .history-title {
+            color: var(--text-charcoal);
+            border-bottom: 2px solid var(--secondary-sage);
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .log-item {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(61, 56, 51, 0.03);
+            border-left: 5px solid var(--interactive-sky);
+        }
+
+        .log-meta {
+            color: var(--text-taupe);
+            font-size: 13px;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .log-books-grid {
+            display: block;
+        }
+
+        .log-book-entry {
+            background-color: var(--bg-main);
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+
+        .log-book-entry:last-child {
+            margin-bottom: 0;
+        }
+
+        .badge-book {
+            display: inline-block;
+            background-color: var(--secondary-sage);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .text-highlight {
+            background-color: var(--highlight-blush);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-style: italic;
+        }
+
+        .btn-delete {
+            background: none;
+            border: none;
+            color: #ef4444;
+            cursor: pointer;
+            font-size: 13px;
+            padding: 0;
+            margin-top: 10px;
+            text-decoration: underline;
+        }
+        
+        .empty-state {
+            text-align: center;
+            color: var(--text-taupe);
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>📖 Log Book Digital Baca Alkitab</h1>
+        <p class="subtitle">Spesial 3 Bulan: Injil Matius - Injil Yohanes</p>
+    </header>
+
+    <div class="form-card">
+        <form id="logBookForm">
+            <!-- Kolom Tanggal, Bulan, Tahun -->
+            <div class="form-row">
+                <div class="form-col-3">
+                    <label for="logDate">Tanggal</label>
+                    <select id="logDate" required></select>
+                </div>
+                <div class="form-col-3">
+                    <label for="logMonth">Bulan</label>
+                    <select id="logMonth" required>
+                        <option value="Januari">Januari</option>
+                        <option value="Februari">Februari</option>
+                        <option value="Maret">Maret</option>
+                        <option value="April">April</option>
+                        <option value="Mei">Mei</option>
+                        <option value="Juni">Juni</option>
+                        <option value="Juli">Juli</option>
+                        <option value="Agustus">Agustus</option>
+                        <option value="September">September</option>
+                        <option value="Oktobeer">Oktober</option>
+                        <option value="November">November</option>
+                        <option value="Desember">Desember</option>
+                    </select>
+                </div>
+                <div class="form-col-3">
+                    <label for="logYear">Tahun</label>
+                    <select id="logYear" required></select>
+                </div>
+            </div>
+
+            <!-- INJIL MATIUS -->
+            <div class="book-section">
+                <div class="book-title">Injil Matius</div>
+                <div class="inline-inputs">
+                    <div class="inline-field pasal">
+                        <input type="text" id="matPasal" placeholder="Pasal">
+                    </div>
+                    <div class="inline-field ayat">
+                        <input type="text" id="matAyat" placeholder="Ayat (cth: 1-12)">
+                    </div>
+                    <div class="inline-field ayat-mas">
+                        <input type="text" id="matAyatMas" placeholder="Ayat Mas (cth: Mat 1:21)">
+                    </div>
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <input type="text" id="matKesan" placeholder="Kata-kata yang berkesan...">
+                </div>
+                <div>
+                    <input type="text" id="matDoa" placeholder="Pokok Doa...">
+                </div>
+            </div>
+
+            <!-- INJIL MARKUS -->
+            <div class="book-section" style="border-left-color: var(--primary-golden);">
+                <div class="book-title" style="color: var(--primary-golden);">Injil Markus</div>
+                <div class="inline-inputs">
+                    <div class="inline-field pasal">
+                        <input type="text" id="marPasal" placeholder="Pasal">
+                    </div>
+                    <div class="inline-field ayat">
+                        <input type="text" id="marAyat" placeholder="Ayat">
+                    </div>
+                    <div class="inline-field ayat-mas">
+                        <input type="text" id="marAyatMas" placeholder="Ayat Mas">
+                    </div>
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <input type="text" id="marKesan" placeholder="Kata-kata yang berkesan...">
+                </div>
+                <div>
+                    <input type="text" id="marDoa" placeholder="Pokok Doa...">
+                </div>
+            </div>
+
+            <!-- INJIL LUKAS -->
+            <div class="book-section" style="border-left-color: var(--interactive-sky);">
+                <div class="book-title" style="color: var(--interactive-sky);">Injil Lukas</div>
+                <div class="inline-inputs">
+                    <div class="inline-field pasal">
+                        <input type="text" id="lukPasal" placeholder="Pasal">
+                    </div>
+                    <div class="inline-field ayat">
+                        <input type="text" id="lukAyat" placeholder="Ayat">
+                    </div>
+                    <div class="inline-field ayat-mas">
+                        <input type="text" id="lukAyatMas" placeholder="Ayat Mas">
+                    </div>
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <input type="text" id="lukKesan" placeholder="Kata-kata yang berkesan...">
+                </div>
+                <div>
+                    <input type="text" id="lukDoa" placeholder="Pokok Doa...">
+                </div>
+            </div>
+
+            <!-- INJIL YOHANES -->
+            <div class="book-section" style="border-left-color: var(--highlight-blush);">
+                <div class="book-title" style="color: var(--highlight-blush);">Injil Yohanes</div>
+                <div class="inline-inputs">
+                    <div class="inline-field pasal">
+                        <input type="text" id="yohPasal" placeholder="Pasal">
+                    </div>
+                    <div class="inline-field ayat">
+                        <input type="text" id="yohAyat" placeholder="Ayat">
+                    </div>
+                    <div class="inline-field ayat-mas">
+                        <input type="text" id="yohAyatMas" placeholder="Ayat Mas">
+                    </div>
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <input type="text" id="yohKesan" placeholder="Kata-kata yang berkesan...">
+                </div>
+                <div>
+                    <input type="text" id="yohDoa" placeholder="Pokok Doa...">
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit">Simpan Catatan Hari Ini</button>
+        </form>
+    </div>
+
+    <div class="history-section">
+        <h2 class="history-title">Riwayat Jurnal Baca</h2>
+        <div id="logsContainer"></div>
+    </div>
+</div>
+
+<script>
+    // Populate tanggal (1-31)
+    const dateSelect = document.getElementById('logDate');
+    for (let i = 1; i <= 31; i++) {
+        let opt = document.createElement('option');
+        opt.value = i;
+        opt.innerHTML = i;
+        dateSelect.appendChild(opt);
+    }
+
+    // Populate tahun
+    const yearSelect = document.getElementById('logYear');
+    const currentYear = new Date().getFullYear();
+    for (let i = currentYear; i >= currentYear - 1; i--) {
+        let opt = document.createElement('option');
+        opt.value = i;
+        opt.innerHTML = i;
+        yearSelect.appendChild(opt);
+    }
+
+    // Set tanggal & bulan hari ini secara default
+    const today = new Date();
+    dateSelect.value = today.getDate();
+    yearSelect.value = today.getFullYear();
+    const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+    document.getElementById('logMonth').value = months[today.getMonth()];
+
+    const form = document.getElementById('logBookForm');
+    const logsContainer = document.getElementById('logsContainer');
+
+    // Load data dari LocalStorage
+    let readingLogs = JSON.parse(localStorage.getItem('bibleReadingLogs')) || [];
+
+    function renderLogs() {
+        logsContainer.innerHTML = '';
+        if (readingLogs.length === 0) {
+            logsContainer.innerHTML = '<div class="empty-state">Belum ada catatan log book yang disimpan.</div>';
+            return;
+        }
+
+        // Urutkan berdasarkan entri terbaru
+        const sortedLogs = [...readingLogs].reverse();
+
+        sortedLogs.forEach((log) => {
+            const itemDiv = document.createElement('div');
+            itemDiv.classList.add('log-item');
+
+            let booksHTML = '';
+            log.entries.forEach(b => {
+                booksHTML += `
+                    <div class="log-book-entry">
+                        <span class="badge-book">${b.book}</span>
+                        <div style="margin: 5px 0;"><strong>Pasal:</strong> ${b.pasal} | <strong>Ayat:</strong> ${b.ayat}</div>
+                        ${b.kesan ? `<div style="margin: 3px 0;"><strong>Kata Berkesan:</strong> <span class="text-highlight">${b.kesan}</span></div>` : ''}
+                        ${b.ayatMas ? `<div style="margin: 3px 0;"><strong>Ayat Mas:</strong> ✨ ${b.ayatMas}</div>` : ''}
+                        ${b.doa ? `<div style="margin: 3px 0; color: var(--text-taupe);"><strong>Pokok Doa:</strong> 🙏 ${b.doa}</div>` : ''}
+                    </div>
+                `;
+            });
+
+            itemDiv.innerHTML = `
+                <div class="log-meta">📅 Catatan: ${log.date} ${log.month} ${log.year}</div>
+                <div class="log-books-grid">${booksHTML}</div>
+                <button class="btn-delete" onclick="deleteLog('${log.id}')">Hapus Log Ini</button>
+            `;
+            logsContainer.appendChild(itemDiv);
+        });
+    }
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const date = document.getElementById('logDate').value;
+        const month = document.getElementById('logMonth').value;
+        const year = document.getElementById('logYear').value;
+
+        // Ambil data buku jika diisi
+        const booksData = [
+            { id: 'mat', name: 'Injil Matius' },
+            { id: 'mar', name: 'Injil Markus' },
+            { id: 'luk', name: 'Injil Lukas' },
+            { id: 'yoh', name: 'Injil Yohanes' }
+        ];
+
+        let validEntries = [];
+
+        booksData.forEach(b => {
+            const pasal = document.getElementById(b.id + 'Pasal').value.trim();
+            const ayat = document.getElementById(b.id + 'Ayat').value.trim();
+            const kesan = document.getElementById(b.id + 'Kesan').value.trim();
+            const ayatMas = document.getElementById(b.id + 'AyatMas').value.trim();
+            const doa = document.getElementById(b.id + 'Doa').value.trim();
+
+            // Masukkan jika minimal pasal atau ayat diisi
+            if (pasal || ayat || kesan || ayatMas || doa) {
+                validEntries.push({
+                    book: b.name,
+                    pasal: pasal || '-',
+                    ayat: ayat || '-',
+                    kesan: kesan || '',
+                    ayatMas: ayatMas || '',
+                    doa: doa || ''
+                });
+            }
+        });
+
+        if (validEntries.length === 0) {
+            alert('Harap isi minimal satu catatan Injil sebelum menyimpan!');
+            return;
+        }
+
+        const newLog = {
+            id: Date.now().toString(),
+            date,
+            month,
+            year,
+            entries: validEntries
+        };
+
+        readingLogs.push(newLog);
+        localStorage.setItem('bibleReadingLogs', JSON.stringify(readingLogs));
+        
+        // Reset fields
+        booksData.forEach(b => {
+            document.getElementById(b.id + 'Pasal').value = '';
+            document.getElementById(b.id + 'Ayat').value = '';
+            document.getElementById(b.id + 'Kesan').value = '';
+            document.getElementById(b.id + 'AyatMas').value = '';
+            document.getElementById(b.id + 'Doa').value = '';
+        });
+
+        renderLogs();
+    });
+
+    window.deleteLog = function(id) {
+        if (confirm('Apakah Anda yakin ingin menghapus catatan log ini?')) {
+            readingLogs = readingLogs.filter(log => log.id !== id);
+            localStorage.setItem('bibleReadingLogs', JSON.stringify(readingLogs));
+            renderLogs();
+        }
+    };
+
+    renderLogs();
+</script>
+
+</body>
+</html>
